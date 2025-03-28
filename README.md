@@ -37,3 +37,29 @@ python main.py --mode live
 ```bash
 python main.py --mode pcap --file path/to/your.pcap
 ```
+
+
+# 🔷 Step-by-Step Kafka Integration
+
+## 🛠 Step 1: Install Kafka & Dependencies
+First, install the Kafka Python client:
+
+```bash
+pip install kafka-python
+```
+
+Ensure Kafka & Zookeeper are running:
+
+```bash
+bin/zookeeper-server-start.sh config/zookeeper.properties
+bin/kafka-server-start.sh config/server.properties
+```
+
+Create topics:
+
+```bash
+bin/kafka-topics.sh --create --topic smpp-submit --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+bin/kafka-topics.sh --create --topic smpp-deliver --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+bin/kafka-topics.sh --create --topic smpp-response --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+```
+
