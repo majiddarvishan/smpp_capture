@@ -1,52 +1,43 @@
 from fastapi import FastAPI, Query
-from elasticsearch import Elasticsearch
-from typing import List, Optional
+import psycopg2
+from psycopg2.extras import DictCursor
+from db import get_db_connection
 
-# Initialize FastAPI
-app = FastAPI(title="SMPP Insights API")
-
-# Connect to Elasticsearch
-ELASTICSEARCH_HOST = "http://elasticsearch:9200"
-es = Elasticsearch([ELASTICSEARCH_HOST])
+app = FastAPI()
 
 @app.get("/")
 def home():
     return {"message": "Welcome to SMPP Insights API"}
 
 @app.get("/latency/{sequence_number}")
-def get_latency(sequence_number: str):
-    """Get Submit-Resp latency for a specific sequence number"""
-    query = {"query": {"match": {"sequence_number": sequence_number}}}
-    result = es.search(index="smpp-latency", body=query)
-    if result["hits"]["total"]["value"] > 0:
-        return result["hits"]["hits"][0]["_source"]
-    return {"error": "Sequence number not found"}
+def get_latency(sequence_number: int):
+    """Get latency for a specific sequence number"""
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM smpp_data WHERE sequence_number = %s", (sequence_number,))
+    result = cur.fetchone()
+    cur.close()
+    conn.close()
+    return result if result else {"error": "Sequence number not found"}
 
 @app.get("/high-latency")
-def get_high_latency(min_latency: float = Query(500, description="Minimum latency threshold")):
-    """Get all messages with latency greater than threshold"""
-    query = {
-        "query": {
-            "range": {"latency": {"gt": min_latency}}
-        },
-        "size": 100  # Limit to 100 results
-    }
-    result = es.search(index="smpp-latency", body=query)
-    return [hit["_source"] for hit in result["hits"]["hits"]]
+def get_high_latency(min_latency: float = Query(500, description="Minimum latency in ms")):
+    """Get messages with high latency"""
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM smpp_data WHERE latency_ms > %s LIMIT 100", (min_latency,))
+    result = cur.fetchall()
+    cur.close()
+    conn.close()
+    return result
 
 @app.get("/errors")
 def get_failed_messages():
     """Retrieve messages with non-zero command_status (errors)"""
-    query = {"query": {"range": {"command_status": {"gt": 0}}}, "size": 100}
-    result = es.search(index="smpp-errors", body=query)
-    return [hit["_source"] for hit in result["hits"]["hits"]]
-
-@app.get("/packet/{packet_number}")
-def get_packet(packet_number: int):
-    """Retrieve raw SMPP packet by packet number"""
-    query = {"query": {"match": {"packet_number": packet_number}}}
-    result = es.search(index="smpp-packets", body=query)
-    if result["hits"]["total"]["value"] > 0:
-        return result["hits"]["hits"][0]["_source"]
-    return {"error": "Packet not found"}
-
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM smpp_data WHERE command_status > 0 LIMIT 100")
+    result = cur.fetchall()
+    cur.close()
+    conn.close()
+    return result
