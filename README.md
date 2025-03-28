@@ -63,3 +63,49 @@ bin/kafka-topics.sh --create --topic smpp-deliver --bootstrap-server localhost:9
 bin/kafka-topics.sh --create --topic smpp-response --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
 ```
 
+🔷 Step 1: Kafka & Spark Streaming for SMPP Analytics
+📌 Architecture Overview
+1️⃣ Kafka Producers (from packet capture) send data to Kafka.
+2️⃣ Spark Streaming consumes Kafka topics and processes SMPP analytics.
+3️⃣ Processed data is sent to Elasticsearch for storage & visualization.
+4️⃣ Kafka Streams detects high-latency Submit/Submit-Resp pairs.
+
+🔷 Step 2: Kafka Streams for Latency Alerting
+If Submit-Resp latency exceeds a threshold, send an alert.
+✅ Continuously monitors latency & triggers alerts.
+✅ Integrate with Slack, Email, or Webhooks for alerting.
+
+🔷 Step 3: Grafana + Elasticsearch for Real-Time Dashboards
+1. Install Grafana + Elasticsearch
+
+2. Configure Grafana Datasource
+
+- Go to Grafana → Configuration → Data Sources
+- Add Elasticsearch (http://elasticsearch:9200)
+
+3. Create Dashboard with Panels
+- Latency Panel: avg(latency) by sequence_number
+- Error Panel: count(command_status != 0)
+
+✅ Grafana provides a live view of SMPP performance.
+
+2️⃣ Test Endpoints
+Get latency:
+```bash
+curl http://localhost:8000/latency/12345
+```
+
+Get high latency (above 500ms):
+```bash
+curl http://localhost:8000/high-latency?min_latency=500
+```
+
+Get errors:
+```bash
+curl http://localhost:8000/errors
+```
+
+Get raw packet:
+```bash
+curl http://localhost:8000/packet/1
+```
