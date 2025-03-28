@@ -33,8 +33,8 @@
 #     print("✅ Finished processing PCAP file.")
 
 from scapy.all import PcapReader, IP, TCP, Raw
-from smpp_parser import parse_submit_sm, parse_submit_sm_resp, parse_deliver_sm, parse_deliver_sm_resp
-from kafka_producer import send_to_kafka
+from smpp.packet_parser import parse_submit_sm, parse_submit_sm_resp, parse_deliver_sm, parse_deliver_sm_resp
+from kafka.kafka_producer import send_to_kafka
 
 def process_pcap_file(pcap_file):
     """Efficiently processes a PCAP file using a streaming approach."""

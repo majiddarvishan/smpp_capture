@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, from_json, avg, min, max, count
 from pyspark.sql.types import StructType, StructField, StringType, LongType, DoubleType
-from elasticsearch_client import store_in_elasticsearch
+from database.elasticsearch_client import store_in_elasticsearch
 
 KAFKA_BROKER = "localhost:9092"
 SMPP_TOPICS = ["smpp-submit", "smpp-response", "smpp-deliver"]

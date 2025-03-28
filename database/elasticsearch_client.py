@@ -1,5 +1,5 @@
 from elasticsearch import Elasticsearch
-from config import ELASTICSEARCH_HOST, INDEX_NAME
+from config.config import ELASTICSEARCH_HOST, INDEX_NAME
 
 # Initialize Elasticsearch Client
 es = Elasticsearch([ELASTICSEARCH_HOST])

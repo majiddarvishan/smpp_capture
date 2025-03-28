@@ -109,3 +109,49 @@ Get raw packet:
 ```bash
 curl http://localhost:8000/packet/1
 ```
+
+```graphql
+smpp_monitoring/
+│── 📂 config/            # Configuration files (logging, database, etc.)
+│   │── config.py         # Environment variables, PostgreSQL & Kafka settings
+│   │── logging_config.py # Logging setup
+│
+│── 📂 database/          # PostgreSQL database interactions
+│   │── db.py             # Database connection & setup
+│   │── queries.py        # SQL queries for inserting & fetching data
+│
+│── 📂 smpp/              # SMPP packet processing
+│   │── smpp_processor.py # Extract and analyze SMPP packets
+│   │── packet_parser.py  # Parse Submit_SM, Submit_SM_RESP, Deliver_SM, etc.
+│   │── pcap_reader.py    # Read from PCAP files
+│   │── packet_sniffer.py # Live network capture
+│
+│── 📂 kafka/             # Kafka Integration
+│   │── producer.py       # Push SMPP packet data to Kafka
+│   │── consumer.py       # Process Kafka messages in Spark
+│   │── kafka_config.py   # Kafka settings
+│
+│── 📂 analytics/         # Spark analytics for latency detection
+│   │── spark_processor.py  # Spark job for real-time analytics
+│   │── alerting.py       # Kafka Streams for high-latency alerts
+│
+│── 📂 api/               # REST API for querying SMPP insights
+│   │── api.py            # FastAPI for serving insights
+│   │── models.py         # Data models (Pydantic)
+│   │── routes/           # API endpoints
+│       │── smpp_routes.py  # SMPP-specific routes
+│       │── healthcheck.py  # Health check endpoints
+│
+│── 📂 dashboards/        # Visualization with Grafana
+│   │── grafana_config/   # Grafana dashboards & queries
+│
+│── 📂 tests/             # Unit & integration tests
+│   │── test_db.py        # Test database queries
+│   │── test_parser.py    # Test SMPP parsing
+│   │── test_api.py       # Test API responses
+│
+│── Dockerfile            # Docker configuration
+│── docker-compose.yml    # Multi-service container orchestration
+│── requirements.txt      # Python dependencies
+│── README.md             # Project documentation
+```

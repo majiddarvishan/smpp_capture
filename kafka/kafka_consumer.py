@@ -1,5 +1,5 @@
 from kafka import KafkaConsumer
-from elasticsearch_client import store_in_elasticsearch, update_command_status
+from database.elasticsearch_client import store_in_elasticsearch, update_command_status
 import json
 import threading
 

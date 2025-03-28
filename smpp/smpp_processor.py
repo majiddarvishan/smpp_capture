@@ -1,4 +1,4 @@
-from db import get_db_connection
+from database.db import get_db_connection
 
 def store_smpp_data(sequence_number, submit_time, submit_resp_time, source, dest, command_status):
     """Store SMPP packet insights in PostgreSQL"""

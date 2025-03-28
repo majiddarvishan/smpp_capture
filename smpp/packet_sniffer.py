@@ -50,8 +50,8 @@
 #     sniffer.start()
 
 from scapy.all import AsyncSniffer, IP, TCP, Raw
-from kafka_producer import send_to_kafka
-from smpp_parser import parse_submit_sm, parse_submit_sm_resp, parse_deliver_sm, parse_deliver_sm_resp
+from kafka.kafka_producer import send_to_kafka
+from smpp.packet_parser import parse_submit_sm, parse_submit_sm_resp, parse_deliver_sm, parse_deliver_sm_resp
 import queue
 import threading
 

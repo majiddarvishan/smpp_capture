@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Query
 import psycopg2
 from psycopg2.extras import DictCursor
-from db import get_db_connection
+from database.db import get_db_connection
 
 app = FastAPI()
 
