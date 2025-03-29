@@ -183,3 +183,19 @@ smpp_monitoring/
 2. Set up a query for high latency (e.g., MAX(latency_ms) > 500).
 3. Choose a notification channel (Slack, Email, PagerDuty, etc.).
 4. Save the alert.
+
+📌 Explanation of Tables
+✅ 1. SMPPTransaction
+* Stores details of Submit_SM and Submit_SM_RESP packets.
+* Tracks latency (submit time - submit_resp time).
+* Stores command_status (updated when Submit_SM_RESP arrives).
+
+✅ 2. SMPPLatency
+* Stores latency metrics for real-time tracking.
+* Linked to SMPPTransaction via sequence_number.
+* Helps Grafana/Kafka monitor high latency trends.
+
+✅ 3. SMPPAlert
+* Stores high-latency alerts for notification systems.
+* Alerts can be sent to Kafka, Slack, Prometheus, or Grafana.
+

@@ -18,3 +18,13 @@ Would you like me to help with: 1️⃣ Optimizing PostgreSQL indexing for bette
 1️⃣ Integrate alerts with Slack, Prometheus, or Grafana Alerting?
 2️⃣ Optimize PostgreSQL queries for real-time performance?
 3️⃣ Add more Grafana panels (e.g., top source IPs, message delivery rates)?
+
+1️⃣ Add automatic indexing for better query performance?
+2️⃣ Optimize table structures for high-volume data?
+3️⃣ Integrate alerting with Slack, Prometheus, or PagerDuty?
+
+1️⃣ Add filtering (date range, status) to transaction queries?
+
+1️⃣ Enable CORS for frontend integration?
+2️⃣ Add authentication (JWT-based)?
+3️⃣ Implement rate limiting for API requests?
