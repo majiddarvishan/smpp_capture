@@ -155,3 +155,31 @@ smpp_monitoring/
 │── requirements.txt      # Python dependencies
 │── README.md             # Project documentation
 ```
+
+📌 3. How to Set Up in Grafana
+
+🔹 Step 1: Add PostgreSQL as a Data Source
+1. Open Grafana ⚙️ Configuration > Data Sources.
+2. Click Add data source and select PostgreSQL.
+3. Enter the PostgreSQL details:
+
+* Host: your_postgres_host
+* Database: smpp_db
+* User: your_user
+* Password: your_password
+* SSL Mode: disable
+
+4. Click Save & Test.
+
+🔹 Step 2: Import the Dashboard
+1. Go to Dashboards in Grafana.
+2. Click + Import.
+3. Upload the smpp_dashboard.json file.
+4. Select your PostgreSQL data source.
+5. Click Import.
+
+🔹 Step 3: Configure Alerts in Grafana
+1. Go to "Alerting" > "New Alert Rule".
+2. Set up a query for high latency (e.g., MAX(latency_ms) > 500).
+3. Choose a notification channel (Slack, Email, PagerDuty, etc.).
+4. Save the alert.

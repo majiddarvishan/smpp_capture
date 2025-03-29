@@ -1,0 +1,54 @@
+{
+    "dashboard": {
+      "id": null,
+      "title": "SMPP Monitoring Dashboard",
+      "panels": [
+        {
+          "title": "Latency Over Time",
+          "type": "timeseries",
+          "targets": [
+            {
+              "rawSql": "SELECT time_bucket('1 minute', submit_time) AS time, avg(latency_ms) AS avg_latency FROM smpp_latency GROUP BY time ORDER BY time;",
+              "datasource": "PostgreSQL"
+            }
+          ],
+          "fieldConfig": { "defaults": { "unit": "ms" } },
+          "gridPos": { "x": 0, "y": 0, "w": 12, "h": 5 }
+        },
+        {
+          "title": "High Latency Alerts",
+          "type": "table",
+          "targets": [
+            {
+              "rawSql": "SELECT timestamp, alert_message FROM smpp_alerts ORDER BY timestamp DESC LIMIT 10;",
+              "datasource": "PostgreSQL"
+            }
+          ],
+          "gridPos": { "x": 0, "y": 5, "w": 12, "h": 5 }
+        },
+        {
+          "title": "SMPP Request Count",
+          "type": "stat",
+          "targets": [
+            {
+              "rawSql": "SELECT COUNT(*) FROM smpp_latency WHERE submit_time > NOW() - INTERVAL '1 hour';",
+              "datasource": "PostgreSQL"
+            }
+          ],
+          "gridPos": { "x": 0, "y": 10, "w": 6, "h": 4 }
+        },
+        {
+          "title": "Max Latency",
+          "type": "gauge",
+          "targets": [
+            {
+              "rawSql": "SELECT MAX(latency_ms) FROM smpp_latency WHERE submit_time > NOW() - INTERVAL '1 hour';",
+              "datasource": "PostgreSQL"
+            }
+          ],
+          "fieldConfig": { "defaults": { "unit": "ms" } },
+          "gridPos": { "x": 6, "y": 10, "w": 6, "h": 4 }
+        }
+      ]
+    }
+  }
